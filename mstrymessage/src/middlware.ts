@@ -17,5 +17,5 @@ export async function redirectMiddlewar(req: NextRequest) {
   return NextResponse.next();
 }
 export const config = {
-  matcher: ["/sign-in", "/dashboard/:path*"],
+  matcher: ["/sign-in", "sign-up", "/dashboard/:path*"],
 };
