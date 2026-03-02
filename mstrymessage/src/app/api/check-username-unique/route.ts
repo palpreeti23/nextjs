@@ -7,18 +7,18 @@ const usernameQuerySchema = z.object({
   username: usernameValidation,
 });
 
-async function GET(request: Request) {
+export async function GET(request: Request) {
   await dbConnect();
 
   try {
-    const { searchParam } = new URL(request.url);
+    const { searchParams } = new URL(request.url);
     const queryParam = {
-      username: searchParam.get("username"),
+      username: searchParams.get("username"),
     };
 
     //validate with zod
     const result = usernameQuerySchema.safeParse(queryParam);
-    // console.log(result)
+    console.log(result);
     if (!result.success) {
       //   const usernameError = result.error.format().username?._errors || [];
 
@@ -36,7 +36,7 @@ async function GET(request: Request) {
     const { username } = result.data;
     const existingVerifiedUser = await UserModel.findOne({
       username,
-      isVerified,
+      isVerified: true,
     });
     if (existingVerifiedUser) {
       return Response.json(
@@ -45,7 +45,7 @@ async function GET(request: Request) {
           message: "username already taken",
         },
         {
-          status: 500,
+          status: 409,
         },
       );
     }
@@ -56,7 +56,7 @@ async function GET(request: Request) {
         message: "username is unique",
       },
       {
-        status: 500,
+        status: 200,
       },
     );
   } catch (error) {
