@@ -8,14 +8,11 @@ import { useDebounceCallback } from "usehooks-ts";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signUpSchema } from "@/schemas/signupSchema";
-// import { Form } from "@/components/ui/form";
-import { Form } from "react-hook-form";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/apiResponse";
-import { Card, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -44,6 +41,8 @@ export default function page() {
     },
   });
 
+  // console.log(username);
+
   useEffect(() => {
     const checkUsernameUnique = async () => {
       if (username) {
@@ -55,7 +54,7 @@ export default function page() {
             `/api/check-username-unique?username=${username}`,
           );
 
-          // console.log(response)
+          console.log(response);
 
           setUsernameMessage(response.data.message);
         } catch (error) {
@@ -94,7 +93,7 @@ export default function page() {
     <div className="flex justify-center items-center min-h-screen bg-gray-800 text-foreground">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-4xl lg:text-5xl mb-4">Join True Feedback</h1>
+          <h1 className="text-4xl lg:text-5xl mb-4">Join Mystery Message</h1>
           <p className="mb-3">Sign up to start your anonymous adventure</p>
         </div>
 
@@ -121,6 +120,14 @@ export default function page() {
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
+                      {isCheckingUsername && (
+                        <Loader2 className="animate-spin" />
+                      )}
+                      <p
+                        className={`text-sm ${usernameMessage === "username is unique" ? "text-green-500" : "text-red-500"}`}
+                      >
+                        test {usernameMessage}
+                      </p>
                     </Field>
                   )}
                 />
