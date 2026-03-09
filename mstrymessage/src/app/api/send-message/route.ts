@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   const { username, content } = await request.json();
 
   try {
-    const user = await UserModel.findOne(username);
+    const user = await UserModel.findOne({ username });
     if (!user) {
       return Response.json(
         {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
     // is user accepting the message
 
-    if (!user.isAcceptingMessage) {
+    if (!user.isAcceptingMessages) {
       return Response.json(
         {
           success: false,
@@ -42,14 +42,14 @@ export async function POST(request: Request) {
     return Response.json(
       {
         success: true,
-        message: " message send successfully",
+        message: "message send successfully",
       },
       {
-        status: 400,
+        status: 200,
       },
     );
   } catch (error) {
-    console.error("Error adding messages", error);
+    console.log("Error adding messages", error);
     return Response.json(
       {
         success: false,
