@@ -1,4 +1,3 @@
-import { promises } from "dns";
 import mongoose from "mongoose";
 
 type connectionObject = {
@@ -7,7 +6,7 @@ type connectionObject = {
 
 const connection: connectionObject = {};
 
-async function connectionDb(): Promise<void> {
+async function dbConnect(): Promise<void> {
   if (connection.isConnected) {
     console.log("already connected to database");
     return;
@@ -15,6 +14,14 @@ async function connectionDb(): Promise<void> {
 
   try {
     const db = await mongoose.connect(process.env.MONGODB_URI || "", {});
+    console.log(db);
     connection.isConnected = db.connections[0].readyState;
-  } catch (error) {}
+    console.log(connection.isConnected);
+    console.log("DB connected successfully");
+  } catch (error) {
+    console.log("DB connnection failed", error);
+    process.exit();
+  }
 }
+
+export default dbConnect;

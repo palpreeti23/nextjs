@@ -36,22 +36,25 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
       `/api/delete-message/${message._id}`,
     );
     toast(response.data.message);
-    onMessageDelete(message._id);
+    onMessageDelete(message._id.toString());
   };
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
+      <CardContent>
+        <p>{message.content}</p>
+      </CardContent>
+      <CardFooter>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant={"destructive"}>Open</Button>
+            <Button variant={"destructive"}>delete</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Are you absolutely sure?</DialogTitle>
               <DialogDescription>
                 This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                message and remove your data from our servers.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -62,13 +65,6 @@ function MessageCard({ message, onMessageDelete }: MessageCardProps) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-        <CardDescription>Card Description</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>Card Content</p>
-      </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
       </CardFooter>
     </Card>
   );

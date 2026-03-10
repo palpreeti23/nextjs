@@ -28,7 +28,9 @@ function Dashboard() {
     );
   };
 
-  const { data: session } = useSession();
+  console.log(messages);
+  const { data: session, status } = useSession();
+  console.log(status);
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
     defaultValues: {
@@ -43,6 +45,7 @@ function Dashboard() {
     setIsSwiitchLoading(true);
     try {
       const response = await axios.get<ApiResponse>("/api/accept-messages");
+      // console.log(response);
       //the false statement check this up later
       setValue("acceptMessage", response.data.isAcceptingMessages ?? false);
     } catch (error) {
@@ -61,6 +64,8 @@ function Dashboard() {
 
       try {
         const response = await axios.get<ApiResponse>(`/api/get-messages`);
+        console.log("FULL RESPONSE:", response.data);
+        console.log("MESSAGES FROM API:", response.data.messages);
         setMessages(response.data.messages || []);
         if (refresh) {
           toast.info("showing refreshed messages");
@@ -79,9 +84,11 @@ function Dashboard() {
 
   useEffect(() => {
     if (!session || !session.user) return;
-    fetchAcceptMessage();
-    fetchMessages();
-  }, [setValue, session, fetchMessages, fetchAcceptMessage]);
+    if (status === "authenticated") {
+      fetchAcceptMessage();
+      fetchMessages();
+    }
+  }, [setValue, session, fetchMessages, fetchAcceptMessage, status]);
 
   //handle switch change
 
@@ -156,6 +163,7 @@ function Dashboard() {
         )}
       </Button>
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <p>total message : {messages.length}</p>
         {messages.length > 0 ? (
           messages.map((message, index) => (
             <MessageCard

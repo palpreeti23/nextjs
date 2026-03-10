@@ -90,7 +90,7 @@ export default function page() {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800 text-foreground">
+    <div className="flex justify-center items-center min-h-screen text-foreground">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl lg:text-5xl mb-4">Join Mystery Message</h1>
@@ -140,12 +140,12 @@ export default function page() {
                       <FieldLabel>Email</FieldLabel>
                       <Input
                         {...field}
-                        aria-invalid={fieldState.invalid}
+                        // aria-invalid={fieldState.invalid}
                         placeholder="Email"
                       />
-                      {fieldState.invalid && (
+                      {/* {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
-                      )}
+                      )} */}
                     </Field>
                   )}
                 />

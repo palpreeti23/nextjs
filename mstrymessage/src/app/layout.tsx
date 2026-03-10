@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-
 import AuthProvider from "@/contex/AuthProvider";
+import { Toaster } from "@/components/ui/sonner";
+import "./globals.css";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,9 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AuthProvider>
-        <body className={`antialiased`}>{children}</body>
-      </AuthProvider>
+      <body className={`antialiased`}>
+        <AuthProvider>
+          {/* <Navbar /> */}
+          {children}
+          <Toaster />
+        </AuthProvider>
+      </body>
     </html>
   );
 }
